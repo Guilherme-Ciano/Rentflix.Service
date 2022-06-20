@@ -1,35 +1,48 @@
 using Microsoft.AspNetCore.Mvc;
+using rentflix.service.Models;
 using rentflix.service.DTOs;
+using rentflix.service.Repositories;
 
 namespace rentflix.service.Controllers;
 
 [ApiController]
-[Route("[cliente]")]
+[Route("cliente")]
 public class ClienteController : ControllerBase
 {
-    [HttpGet(Name = "GetCliente")]
+    private readonly ClienteRepository _clienteRepository;
+
+
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [HttpGet]
     public IEnumerable<ClienteDTO> GetAllClientes()
     {
-        var clientes = _repository.Getclientes().Select(item => item.AsDTO());
-
-        return clientes;
-    }
-
-    [HttpGet("{id}")]
-    public ActionResult<ClienteDTO> GetCliente(Guid id)
-    {
-        var item = _repository.GetItem(id);
-
-        if (item == null)
+        try
         {
-            return NotFound();
+            return _clienteRepository.GetAll();
         }
-
-        return item.AsDTO();
+        catch (Exception ex)
+        {
+            throw ex;
+        }
     }
 
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status412PreconditionFailed)]
+    [HttpGet("{id}")]
+    public ClienteDTO GetCliente(int id)
+    {
+        return _clienteRepository.GetById(id);
+    }
+
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status412PreconditionFailed)]
     [HttpPost]
-    public ActionResult<ClienteDTO> CreateCliente(CreateClienteDTO item)
+    public ActionResult<ClienteDTO> CreateCliente(ClienteDTO item)
     {
         var newItem = new ClienteDTO
         {
@@ -38,44 +51,71 @@ public class ClienteController : ControllerBase
             DataNascimento = item.DataNascimento,
         };
 
-        _repository.CreateItem(newItem);
-
-        return CreatedAtAction(nameof(GetItem), new { id = newItem.Id }, newItem.AsDTO());
-    }
-
-    [HttpPut("{id}")]
-    public ActionResult<ClienteDTO> UpdateCliente(int id, UpdateClienteDTO item)
-    {
-        var existingItem = _repository.GetItem(id);
-
-        if (existingItem == null)
+        try
         {
-            return NotFound();
+
+            _clienteRepository.Create(newItem);
+            return CreatedAtRoute("GetCliente", new { id = newItem.Id }, newItem);
+
         }
-
-        Item updatedItem = existingItem with
+        catch (Exception ex)
         {
-            Name = item.Name,
-            Price = item.Price
-        };
 
-        _repository.UpdateItem(updatedItem);
-
-        return updatedItem.AsDTO();
+            throw ex;
+        }
     }
 
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status412PreconditionFailed)]
+    [HttpPut("{id}")]
+    public ActionResult<ClienteDTO> UpdateCliente(int id, ClienteDTO item)
+    {
+        try
+        {
+            var cliente = _clienteRepository.GetById(id);
+            if (cliente == null)
+            {
+                return NotFound();
+            }
+
+            cliente.Nome = item.Nome;
+            cliente.CPF = item.CPF;
+            cliente.DataNascimento = item.DataNascimento;
+
+            _clienteRepository.Update(cliente);
+            return cliente;
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status412PreconditionFailed)]
     [HttpDelete("{id}")]
     public ActionResult DeleteCliente(int id)
     {
-        var existingItem = _repository.GetItem(id);
-
-        if (existingItem == null)
+        try
         {
-            return NotFound();
+            var cliente = _clienteRepository.GetById(id);
+            if (cliente == null)
+            {
+                return NotFound();
+            }
+
+            _clienteRepository.Delete(id);
+            return NoContent();
+
         }
-
-        _repository.DeleteItem(id);
-
-        return NoContent();
+        catch (Exception ex)
+        {
+            throw ex;
+        }
     }
 }

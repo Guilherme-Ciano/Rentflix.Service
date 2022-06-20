@@ -4,6 +4,7 @@ namespace rentflix.service.DTOs
 {
     public class LocacaoDTO
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
