@@ -1,25 +1,24 @@
 using Microsoft.AspNetCore.Mvc;
-using rentflix.service.Models;
 using rentflix.service.DTOs;
 using rentflix.service.Repositories;
 
 namespace rentflix.service.Controllers;
 
 [ApiController]
-[Route("clientes")]
-public class ClienteController : ControllerBase
-{
-    private readonly ClienteRepository _clienteRepository;
+[Route("filmes")]
 
+public class FilmeController : ControllerBase
+{
+    private readonly FilmeRepository _filmeRepository;
 
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [HttpGet]
-    public IEnumerable<ClienteDTO> GetAllClientes()
+    public IEnumerable<FilmeDTO> GetAllFilmes()
     {
         try
         {
-            return _clienteRepository.GetAll();
+            return _filmeRepository.GetAll();
         }
         catch (Exception ex)
         {
@@ -32,11 +31,11 @@ public class ClienteController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status412PreconditionFailed)]
     [HttpGet("{id}")]
-    public ClienteDTO GetCliente(int id)
+    public FilmeDTO GetFilme(int id)
     {
         try
         {
-            return _clienteRepository.GetById(id);
+            return _filmeRepository.GetById(id);
         }
         catch (System.Exception ex)
         {
@@ -49,25 +48,26 @@ public class ClienteController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status412PreconditionFailed)]
     [HttpPost]
-    public ActionResult<ClienteDTO> CreateCliente(ClienteDTO item)
+    public ActionResult<FilmeDTO> CreateFilme(FilmeDTO item)
     {
-        var newItem = new ClienteDTO
+        var newItem = new FilmeDTO
         {
-            Nome = item.Nome,
-            CPF = item.CPF,
-            DataNascimento = item.DataNascimento,
+            Titulo = item.Titulo,
+            ClassificacaoIndicativa = item.ClassificacaoIndicativa,
+            Sinopse = item.Sinopse,
+            Genero = item.Genero,
+            Lancamento = item.Lancamento,
         };
 
         try
         {
 
-            _clienteRepository.Create(newItem);
-            return CreatedAtRoute("GetCliente", new { id = newItem.Id }, newItem);
+            _filmeRepository.Create(newItem);
+            return CreatedAtRoute("GetFilme", new { id = newItem.Id }, newItem);
 
         }
         catch (Exception ex)
         {
-
             throw ex;
         }
     }
@@ -77,23 +77,21 @@ public class ClienteController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status412PreconditionFailed)]
     [HttpPut("{id}")]
-    public ActionResult<ClienteDTO> UpdateCliente(int id, ClienteDTO item)
+    public ActionResult<FilmeDTO> UpdateFilme(int id, FilmeDTO item)
     {
+        var newItem = new FilmeDTO
+        {
+            Titulo = item.Titulo,
+            ClassificacaoIndicativa = item.ClassificacaoIndicativa,
+            Sinopse = item.Sinopse,
+            Genero = item.Genero,
+            Lancamento = item.Lancamento,
+        };
+
         try
         {
-            var cliente = _clienteRepository.GetById(id);
-            if (cliente == null)
-            {
-                return NotFound();
-            }
-
-            cliente.Nome = item.Nome;
-            cliente.CPF = item.CPF;
-            cliente.DataNascimento = item.DataNascimento;
-
-            _clienteRepository.Update(cliente);
-            return cliente;
-
+            _filmeRepository.Update(newItem);
+            return newItem;
         }
         catch (Exception ex)
         {
@@ -106,19 +104,19 @@ public class ClienteController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status412PreconditionFailed)]
     [HttpDelete("{id}")]
-    public ActionResult DeleteCliente(int id)
+    public ActionResult<FilmeDTO> DeleteFilme(int id)
     {
         try
         {
-            var cliente = _clienteRepository.GetById(id);
-            if (cliente == null)
+
+            var filme = _filmeRepository.GetById(id);
+            if (filme == null)
             {
                 return NotFound();
             }
 
-            _clienteRepository.Delete(id);
+            _filmeRepository.Delete(id);
             return NoContent();
-
         }
         catch (Exception ex)
         {

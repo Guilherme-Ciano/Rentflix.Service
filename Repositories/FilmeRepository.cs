@@ -5,15 +5,15 @@ using Dapper;
 
 namespace rentflix.service.Repositories
 {
-    public class ClienteRepository : ClienteInterface
+    public class FilmeRepository : FilmeInterface
     {
-        public IEnumerable<ClienteDTO> GetAll()
+        public IEnumerable<FilmeDTO> GetAll()
         {
             try
             {
                 using (MySqlConnection connection = DB_Connection.GetConnection())
                 {
-                    return connection.Query<ClienteDTO>("SELECT * FROM clientes ORDER BY id ASC");
+                    return connection.Query<FilmeDTO>("SELECT * FROM filmes ORDER BY id ASC");
                 }
             }
             catch (Exception ex)
@@ -22,13 +22,13 @@ namespace rentflix.service.Repositories
             }
         }
 
-        public ClienteDTO GetById(int id)
+        public FilmeDTO GetById(int id)
         {
             try
             {
                 using (MySqlConnection connection = DB_Connection.GetConnection())
                 {
-                    return (ClienteDTO)connection.Query<ClienteDTO>("SELECT * FROM clientes WHERE id = @id", new { id });
+                    return (FilmeDTO)connection.Query<FilmeDTO>("SELECT * FROM filmes WHERE id = @id", new { id });
                 }
             }
             catch (Exception ex)
@@ -37,13 +37,14 @@ namespace rentflix.service.Repositories
             }
         }
 
-        public void Create(ClienteDTO cliente)
+
+        public void Create(FilmeDTO filme)
         {
             try
             {
                 using (MySqlConnection connection = DB_Connection.GetConnection())
                 {
-                    connection.Execute("INSERT INTO clientes (nome, cpf, data_nascimento) VALUES (@Nome, @CPF, @DataNascimento)", cliente);
+                    connection.Execute("INSERT INTO filmes (titulo, classificacao_indicativa, sinopse, genero, lancamento) VALUES (@titulo, @classificacao_indicativa, @sinopse, @genero, @lancamento)", filme);
                 }
             }
             catch (Exception ex)
@@ -52,13 +53,13 @@ namespace rentflix.service.Repositories
             }
         }
 
-        public void Update(ClienteDTO cliente)
+        public void Update(FilmeDTO filme)
         {
             try
             {
                 using (MySqlConnection connection = DB_Connection.GetConnection())
                 {
-                    connection.Execute("UPDATE clientes SET nome = @Nome, cpf = @CPF, data_nascimento = @DataNascimento WHERE id = @Id", cliente);
+                    connection.Execute("UPDATE filmes SET titulo = @titulo, classificacao_indicativa = @classificacao_indicativa, sinopse = @sinopse, genero = @genero, lancamento = @lancamento WHERE id = @id", filme);
                 }
             }
             catch (Exception ex)
@@ -73,7 +74,7 @@ namespace rentflix.service.Repositories
             {
                 using (MySqlConnection connection = DB_Connection.GetConnection())
                 {
-                    connection.Execute("DELETE FROM clientes WHERE id = @id", new { id });
+                    connection.Execute("DELETE FROM filmes WHERE id = @id", new { id });
                 }
             }
             catch (Exception ex)
@@ -81,5 +82,6 @@ namespace rentflix.service.Repositories
                 throw ex;
             }
         }
+
     }
 }

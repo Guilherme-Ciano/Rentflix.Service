@@ -1,15 +1,12 @@
-using rentflix.service.Models;
+using rentflix.service.DTOs;
 namespace rentflix.service.Interfaces
 {
     public interface FilmeInterface
     {
-        Filme Get(int id);
-        Filme Get(string nome);
-        void Create(Filme filme);
-        void Update(Filme filme);
+        void Create(FilmeDTO filme);
+        void Update(FilmeDTO filme);
         void Delete(int id);
-        IEnumerable<Filme> GetAll();
-        IEnumerable<Filme> GetById(int id);
-        IEnumerable<Filme> GetByGenero(int id);
+        IEnumerable<FilmeDTO> GetAll();
+        FilmeDTO GetById(int id);
     }
 }

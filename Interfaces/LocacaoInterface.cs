@@ -1,13 +1,14 @@
-using rentflix.service.Models;
+using rentflix.service.DTOs;
 namespace rentflix.service.Interfaces
 {
     public interface LocacaoInterface
     {
-        void Create(Locacao locacao);
-        void Update(Locacao locacao);
+        IEnumerable<LocacaoDTO> GetAll();
+        void Create(LocacaoDTO locacao);
+        void Update(LocacaoDTO locacao);
         void Delete(int id);
-        Locacao GetById(int id);
-        Locacao GetByClienteId(int id);
-        Locacao GetByFilmeId(int id);
+        LocacaoDTO GetById(int id);
+        LocacaoDTO GetByClienteId(int id);
+        LocacaoDTO GetByFilmeId(int id);
     }
 }
