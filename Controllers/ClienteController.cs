@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using rentflix.service.Models;
 using rentflix.service.DTOs;
@@ -9,7 +10,7 @@ namespace rentflix.service.Controllers;
 [Route("clientes")]
 public class ClienteController : ControllerBase
 {
-    private readonly ClienteRepository _clienteRepository;
+    private ClienteRepository ClienteRepository = new ClienteRepository();
 
 
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -19,7 +20,7 @@ public class ClienteController : ControllerBase
     {
         try
         {
-            return _clienteRepository.GetAll();
+            return ClienteRepository.GetAll();
         }
         catch (Exception ex)
         {
@@ -36,7 +37,7 @@ public class ClienteController : ControllerBase
     {
         try
         {
-            return _clienteRepository.GetById(id);
+            return ClienteRepository.GetById(id);
         }
         catch (System.Exception ex)
         {
@@ -51,24 +52,21 @@ public class ClienteController : ControllerBase
     [HttpPost]
     public ActionResult<ClienteDTO> CreateCliente(ClienteDTO item)
     {
-        var newItem = new ClienteDTO
-        {
-            Nome = item.Nome,
-            CPF = item.CPF,
-            DataNascimento = item.DataNascimento,
-        };
+        ClienteDTO cliente = new ClienteDTO(item.Nome, item.CPF, item.DataNascimento, item.Email, item.Senha);
 
         try
         {
 
-            _clienteRepository.Create(newItem);
-            return CreatedAtRoute("GetCliente", new { id = newItem.Id }, newItem);
+            ClienteRepository.Create(cliente);
+
+            string token = Guid.NewGuid().ToString();
+            Object response = new { message = "Cliente criado com sucesso!", token = token, data = cliente };
+            return Ok(response);
 
         }
         catch (Exception ex)
         {
-
-            throw ex;
+            return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
         }
     }
 
@@ -81,7 +79,7 @@ public class ClienteController : ControllerBase
     {
         try
         {
-            var cliente = _clienteRepository.GetById(id);
+            var cliente = ClienteRepository.GetById(id);
             if (cliente == null)
             {
                 return NotFound();
@@ -91,7 +89,7 @@ public class ClienteController : ControllerBase
             cliente.CPF = item.CPF;
             cliente.DataNascimento = item.DataNascimento;
 
-            _clienteRepository.Update(cliente);
+            ClienteRepository.Update(cliente);
             return cliente;
 
         }
@@ -110,13 +108,13 @@ public class ClienteController : ControllerBase
     {
         try
         {
-            var cliente = _clienteRepository.GetById(id);
+            var cliente = ClienteRepository.GetById(id);
             if (cliente == null)
             {
                 return NotFound();
             }
 
-            _clienteRepository.Delete(id);
+            ClienteRepository.Delete(id);
             return NoContent();
 
         }

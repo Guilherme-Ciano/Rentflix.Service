@@ -10,6 +10,13 @@ namespace rentflix.service.Models
             this.DataNascimento = dataNascimento;
         }
 
+        public Cliente(string nome, string cpf, DateTime dataNascimento)
+        {
+            this.Nome = nome;
+            this.CPF = cpf;
+            this.DataNascimento = dataNascimento;
+        }
+
         public int Id { get; set; }
         public string Nome { get; set; }
         public string CPF { get; set; }

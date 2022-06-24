@@ -15,13 +15,24 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors(x => x
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
 }
 
-DB_Connection.CreateTables(DB_Connection.GetConnection());
+DB_Connection.CreateTables();
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+// allow CORS for all origins, methods, headers
+app.UseCors(x => x
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+
 
 app.MapControllers();
 

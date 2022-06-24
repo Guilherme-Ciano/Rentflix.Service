@@ -1,3 +1,4 @@
+using System.Net;
 using rentflix.service.Interfaces;
 using rentflix.service.DTOs;
 using MySqlConnector;
@@ -43,7 +44,7 @@ namespace rentflix.service.Repositories
             {
                 using (MySqlConnection connection = DB_Connection.GetConnection())
                 {
-                    connection.Execute("INSERT INTO clientes (nome, cpf, data_nascimento) VALUES (@Nome, @CPF, @DataNascimento)", cliente);
+                    connection.Execute("INSERT INTO clientes (nome, cpf, data_nascimento, email, senha) VALUES (@Nome, @CPF, @DataNascimento, @Email, @Senha)", cliente);
                 }
             }
             catch (Exception ex)
