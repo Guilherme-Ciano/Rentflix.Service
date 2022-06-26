@@ -3,7 +3,7 @@ namespace rentflix.service.Models
     public class Filme
     {
 
-        public Filme(int id, string titulo, string genero, string sinopse, int classificacaoIndicativa, int lancamento)
+        public Filme(int id, string titulo, string genero, string sinopse, string poster, int classificacaoIndicativa, int lancamento)
         {
             this.Id = id;
             this.Titulo = titulo;
@@ -11,6 +11,7 @@ namespace rentflix.service.Models
             this.Sinopse = sinopse;
             this.ClassificacaoIndicativa = classificacaoIndicativa;
             this.Lancamento = lancamento;
+            this.Poster = poster;
 
         }
 
@@ -20,5 +21,6 @@ namespace rentflix.service.Models
         public string Sinopse { get; set; }
         public int ClassificacaoIndicativa { get; set; }
         public int Lancamento { get; set; }
+        public string Poster { get; set; }
     }
 }

@@ -6,7 +6,7 @@ namespace rentflix.service.Interfaces
         void Create(FilmeDTO filme);
         void Update(FilmeDTO filme);
         void Delete(int id);
-        IEnumerable<FilmeDTO> GetAll();
+        List<FilmeDTO> GetAll();
         FilmeDTO GetById(int id);
     }
 }

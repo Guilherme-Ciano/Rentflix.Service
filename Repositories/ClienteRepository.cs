@@ -82,5 +82,41 @@ namespace rentflix.service.Repositories
                 throw ex;
             }
         }
+
+        public ClienteDTO GetClienteLogging(LoggingDTO item)
+        {
+            try
+            {
+                using (MySqlConnection connection = DB_Connection.GetConnection())
+                {
+                    var result = connection.Query("SELECT * FROM clientes WHERE email = @Email AND senha = @Senha", item).ToList();
+                    if (result == null)
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        List<ClienteDTO> clientes = new List<ClienteDTO>();
+                        result.ForEach(x =>
+
+                        clientes.Add(new ClienteDTO
+                        (
+                            x.id,
+                            x.nome,
+                            x.cpf,
+                            x.data_nascimento,
+                            x.email,
+                            x.senha
+                        )));
+
+                        return clientes.FirstOrDefault();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

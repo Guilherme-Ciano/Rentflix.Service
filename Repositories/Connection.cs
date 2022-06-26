@@ -34,7 +34,8 @@ namespace rentflix.service.Repositories
                                     `classificacao_indicativa` int(10) NOT NULL,
                                     `sinopse` varchar(500) NOT NULL,
                                     `genero` varchar(100) NOT NULL,
-                                    `lancamento` date NOT NULL,
+                                    `lancamento` int NOT NULL,
+                                    `poster` varchar(200) NOT NULL,	
                                     PRIMARY KEY (`id`)
                                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
             command.ExecuteNonQuery();

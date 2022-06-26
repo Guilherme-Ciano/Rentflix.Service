@@ -8,5 +8,6 @@ namespace rentflix.service.Interfaces
         void Delete(int id);
         IEnumerable<ClienteDTO> GetAll();
         ClienteDTO GetById(int id);
+        ClienteDTO GetClienteLogging(LoggingDTO login);
     }
 }

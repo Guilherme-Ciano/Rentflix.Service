@@ -24,5 +24,44 @@ namespace rentflix.service.DTOs
 
         [Required]
         public int Lancamento { get; set; }
+
+        [Required]
+        public string Poster { get; set; }
+
+        public FilmeDTO(
+            string titulo,
+            string genero,
+            string sinopse,
+            int classificacaoIndicativa,
+            int lancamento,
+            string poster
+        )
+        {
+            Titulo = titulo;
+            Genero = genero;
+            Sinopse = sinopse;
+            ClassificacaoIndicativa = classificacaoIndicativa;
+            Lancamento = lancamento;
+            Poster = poster;
+        }
+
+        public FilmeDTO(
+            int id,
+            string titulo,
+            string genero,
+            string sinopse,
+            int classificacaoIndicativa,
+            int lancamento,
+            string poster
+        )
+        {
+            Id = id;
+            Titulo = titulo;
+            Genero = genero;
+            Sinopse = sinopse;
+            ClassificacaoIndicativa = classificacaoIndicativa;
+            Lancamento = lancamento;
+            Poster = poster;
+        }
     }
 }

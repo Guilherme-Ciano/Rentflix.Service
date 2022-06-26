@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using rentflix.service.DTOs;
 using rentflix.service.Repositories;
@@ -9,7 +10,7 @@ namespace rentflix.service.Controllers;
 
 public class FilmeController : ControllerBase
 {
-    private readonly FilmeRepository _filmeRepository;
+    private FilmeRepository _filmeRepository = new FilmeRepository();
 
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -18,11 +19,13 @@ public class FilmeController : ControllerBase
     {
         try
         {
-            return _filmeRepository.GetAll();
+            List<FilmeDTO> filmes = _filmeRepository.GetAll();
+
+            return filmes;
         }
         catch (Exception ex)
         {
-            throw ex;
+            return (IEnumerable<FilmeDTO>)StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
         }
     }
 
@@ -50,25 +53,27 @@ public class FilmeController : ControllerBase
     [HttpPost]
     public ActionResult<FilmeDTO> CreateFilme(FilmeDTO item)
     {
-        var newItem = new FilmeDTO
-        {
-            Titulo = item.Titulo,
-            ClassificacaoIndicativa = item.ClassificacaoIndicativa,
-            Sinopse = item.Sinopse,
-            Genero = item.Genero,
-            Lancamento = item.Lancamento,
-        };
+        FilmeDTO novoFilme = new FilmeDTO(
+            item.Titulo,
+            item.Genero,
+            item.Sinopse,
+            item.ClassificacaoIndicativa,
+            item.Lancamento,
+            item.Poster
+        );
 
         try
         {
 
-            _filmeRepository.Create(newItem);
-            return CreatedAtRoute("GetFilme", new { id = newItem.Id }, newItem);
+            _filmeRepository.Create(novoFilme);
+            string token = Guid.NewGuid().ToString();
+            Object response = new { message = "Filme criado com sucesso!", token = token, data = novoFilme };
+            return Ok(response);
 
         }
         catch (Exception ex)
         {
-            throw ex;
+            return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
         }
     }
 
@@ -79,14 +84,14 @@ public class FilmeController : ControllerBase
     [HttpPut("{id}")]
     public ActionResult<FilmeDTO> UpdateFilme(int id, FilmeDTO item)
     {
-        var newItem = new FilmeDTO
-        {
-            Titulo = item.Titulo,
-            ClassificacaoIndicativa = item.ClassificacaoIndicativa,
-            Sinopse = item.Sinopse,
-            Genero = item.Genero,
-            Lancamento = item.Lancamento,
-        };
+        var newItem = new FilmeDTO(
+            item.Titulo,
+            item.Genero,
+            item.Sinopse,
+            item.ClassificacaoIndicativa,
+            item.Lancamento,
+            item.Poster
+        );
 
         try
         {

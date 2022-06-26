@@ -7,13 +7,38 @@ namespace rentflix.service.Repositories
 {
     public class FilmeRepository : FilmeInterface
     {
-        public IEnumerable<FilmeDTO> GetAll()
+        public List<FilmeDTO> GetAll()
         {
             try
             {
                 using (MySqlConnection connection = DB_Connection.GetConnection())
                 {
-                    return connection.Query<FilmeDTO>("SELECT * FROM filmes ORDER BY id ASC");
+                    List<FilmeDTO> filmes = new List<FilmeDTO>();
+                    var result = connection.Query("SELECT * FROM filmes").ToList();
+
+                    result.ForEach(x =>
+                    {
+                        filmes.Add(new FilmeDTO(
+                            x.id,
+                            x.titulo,
+                            x.genero,
+                            x.sinopse,
+                            x.classificacao_indicativa,
+                            x.lancamento,
+                            x.poster
+                        ));
+                    });
+
+                    // if result is null, return empty list
+
+                    if (result == null)
+                    {
+                        return new List<FilmeDTO>();
+                    }
+                    else
+                    {
+                        return filmes;
+                    }
                 }
             }
             catch (Exception ex)
@@ -44,7 +69,7 @@ namespace rentflix.service.Repositories
             {
                 using (MySqlConnection connection = DB_Connection.GetConnection())
                 {
-                    connection.Execute("INSERT INTO filmes (titulo, classificacao_indicativa, sinopse, genero, lancamento) VALUES (@titulo, @classificacao_indicativa, @sinopse, @genero, @lancamento)", filme);
+                    connection.Execute("INSERT INTO filmes (titulo, classificacao_indicativa, sinopse, genero, lancamento, poster) VALUES (@Titulo, @ClassificacaoIndicativa, @Sinopse, @Genero, @Lancamento, @Poster)", filme);
                 }
             }
             catch (Exception ex)

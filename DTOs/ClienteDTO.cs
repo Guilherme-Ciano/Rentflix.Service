@@ -37,5 +37,22 @@ namespace rentflix.service.DTOs
             this.Email = Email;
             this.Senha = Senha;
         }
+
+        public ClienteDTO(
+            int id,
+            string nome,
+            string cpf,
+            DateTime dataNascimento,
+            string email,
+            string senha
+            )
+        {
+            Id = id;
+            Nome = nome;
+            CPF = cpf;
+            DataNascimento = dataNascimento;
+            Email = email;
+            Senha = senha;
+        }
     }
 }

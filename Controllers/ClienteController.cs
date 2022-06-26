@@ -49,6 +49,32 @@ public class ClienteController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status412PreconditionFailed)]
+    [HttpPost("login")]
+    public ActionResult<ClienteDTO> GetClienteLogging(LoggingDTO login)
+    {
+        try
+        {
+            ClienteDTO cliente = ClienteRepository.GetClienteLogging(login);
+
+            if (cliente == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return cliente;
+            }
+        }
+        catch (System.Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status412PreconditionFailed)]
     [HttpPost]
     public ActionResult<ClienteDTO> CreateCliente(ClienteDTO item)
     {
