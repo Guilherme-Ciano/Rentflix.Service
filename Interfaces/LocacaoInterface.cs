@@ -3,7 +3,7 @@ namespace rentflix.service.Interfaces
 {
     public interface LocacaoInterface
     {
-        IEnumerable<LocacaoDTO> GetAll();
+        List<LocacaoDTO> GetAll();
         void Create(LocacaoDTO locacao);
         void Update(LocacaoDTO locacao);
         void Delete(int id);

@@ -54,5 +54,14 @@ namespace rentflix.service.DTOs
             Email = email;
             Senha = senha;
         }
+
+        public ClienteDTO()
+        {
+        }
+
+        public ClienteDTO(int id)
+        {
+            Id = id;
+        }
     }
 }

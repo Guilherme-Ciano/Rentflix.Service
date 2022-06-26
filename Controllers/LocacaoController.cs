@@ -9,7 +9,7 @@ namespace rentflix.service.Controllers;
 
 public class LocacaoController : ControllerBase
 {
-    private readonly LocacaoRepository _locacaoRepository;
+    private LocacaoRepository _locacaoRepository = new LocacaoRepository();
 
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -18,7 +18,8 @@ public class LocacaoController : ControllerBase
     {
         try
         {
-            return _locacaoRepository.GetAll();
+            List<LocacaoDTO> locacoes = _locacaoRepository.GetAll();
+            return locacoes;
         }
         catch (Exception ex)
         {
@@ -84,18 +85,18 @@ public class LocacaoController : ControllerBase
     [HttpPost]
     public ActionResult<LocacaoDTO> CreateLocacao(LocacaoDTO item)
     {
-        var newItem = new LocacaoDTO
-        {
-            Id_Cliente = item.Id_Cliente,
-            Id_Filme = item.Id_Filme,
-            DataLocacao = item.DataLocacao,
-            DataDevolucao = item.DataDevolucao,
-        };
+        var newItem = new LocacaoDTO(
+            item.Id_Cliente,
+            item.Id_Filme,
+            item.DataLocacao,
+            item.DataDevolucao
+        );
 
         try
         {
             _locacaoRepository.Create(newItem);
-            return CreatedAtRoute("GetLocacao", new { id = newItem.Id }, newItem);
+            Object response = new { message = "Locação criada com sucesso!", data = newItem };
+            return Ok(response);
         }
         catch (System.Exception ex)
         {
@@ -110,14 +111,13 @@ public class LocacaoController : ControllerBase
     [HttpPut("{id}")]
     public ActionResult<LocacaoDTO> UpdateLocacao(LocacaoDTO item)
     {
-        var newItem = new LocacaoDTO
-        {
-            Id = item.Id,
-            Id_Cliente = item.Id_Cliente,
-            Id_Filme = item.Id_Filme,
-            DataLocacao = item.DataLocacao,
-            DataDevolucao = item.DataDevolucao,
-        };
+        var newItem = new LocacaoDTO(
+            item.Id,
+            item.Id_Cliente,
+            item.Id_Filme,
+            item.DataLocacao,
+            item.DataDevolucao
+        );
 
         try
         {

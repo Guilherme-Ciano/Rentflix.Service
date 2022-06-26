@@ -28,24 +28,3 @@ Abra o seu terminal (particularmente, prefiro usar o bash, então recomendo o me
 ```bash
   docker build -t rentflix -f Dockerfile .
 ```
-
-## Aprendizados
-
-O que você aprendeu construindo esse projeto? Quais desafios você enfrentou e como você superou-os?
-
-## Libs do projeto e seus devidos usos
-
-| Lib           | Funcionalidade                                                                                 |
-| ------------- | ---------------------------------------------------------------------------------------------- |
-| cypress       | testes de performance                                                                          |
-| jest          | testes unitários de integração                                                                 |
-| webpack       | minificação de códigos para build                                                              |
-| sass          | criação de estilos de maneira mais fácil e menos verbosa                                       |
-| mui           | componentes reutilizaveis para melhor otimização de tempo                                      |
-| chakra-ui     | templates facilmente trabalhados para melhor gerencia de tempo e planejamento de nova features |
-| react-icons   | icones para criar e personalizar o sistema de forma orgânica e dinâmica                        |
-| redux-toolkit | gerenciamento de estado da aplicação + sintaxe mais clara                                      |
-
-## Autores
-
-- [@Guilherme-Ciano](https://www.github.com/guilherme-ciano)

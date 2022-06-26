@@ -28,6 +28,11 @@ namespace rentflix.service.DTOs
         [Required]
         public string Poster { get; set; }
 
+        public FilmeDTO()
+        {
+
+        }
+
         public FilmeDTO(
             string titulo,
             string genero,

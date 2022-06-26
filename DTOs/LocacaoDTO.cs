@@ -4,6 +4,25 @@ namespace rentflix.service.DTOs
 {
     public class LocacaoDTO
     {
+        public LocacaoDTO(int id, int id_Cliente, int id_Filme, DateTime dataLocacao, DateTime dataDevolucao)
+        {
+            Id = id;
+            Id_Cliente = id_Cliente;
+            Id_Filme = id_Filme;
+            DataLocacao = dataLocacao;
+            DataDevolucao = dataDevolucao;
+        }
+
+        public LocacaoDTO(int id_Cliente, int id_Filme, DateTime dataLocacao, DateTime dataDevolucao)
+        {
+            Id_Cliente = id_Cliente;
+            Id_Filme = id_Filme;
+            DataLocacao = dataLocacao;
+            DataDevolucao = dataDevolucao;
+        }
+
+        public LocacaoDTO() { }
+
         [Key]
         public int Id { get; set; }
 

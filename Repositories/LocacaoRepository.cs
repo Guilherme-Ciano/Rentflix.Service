@@ -7,13 +7,34 @@ namespace rentflix.service.Repositories
 {
     public class LocacaoRepository : LocacaoInterface
     {
-        public IEnumerable<LocacaoDTO> GetAll()
+        public List<LocacaoDTO> GetAll()
         {
             try
             {
                 using (MySqlConnection connection = DB_Connection.GetConnection())
                 {
-                    return connection.Query<LocacaoDTO>("SELECT * FROM locacoes ORDER BY id ASC");
+                    List<LocacaoDTO> locacoes = new List<LocacaoDTO>();
+                    var result = connection.Query("SELECT * FROM locacoes").ToList();
+
+                    result.ForEach(x =>
+                    {
+                        locacoes.Add(new LocacaoDTO(
+                            x.id,
+                            x.cliente_id,
+                            x.filme_id,
+                            x.data_locacao,
+                            x.data_devolucao
+                        ));
+                    });
+
+                    if (result == null)
+                    {
+                        return new List<LocacaoDTO>();
+                    }
+                    else
+                    {
+                        return locacoes;
+                    }
                 }
             }
             catch (Exception ex)
@@ -28,7 +49,7 @@ namespace rentflix.service.Repositories
             {
                 using (MySqlConnection connection = DB_Connection.GetConnection())
                 {
-                    connection.Execute("INSERT INTO locacoes (cliente_id, filme_id, data_locacao, data_devolucao) VALUES (@cliente_id, @filme_id, @data_locacao, @data_devolucao)", locacao);
+                    connection.Execute("INSERT INTO locacoes (cliente_id, filme_id, data_locacao, data_devolucao) VALUES (@Id_Cliente, @Id_Filme, @DataLocacao, @DataDevolucao)", locacao);
                 }
             }
             catch (Exception ex)

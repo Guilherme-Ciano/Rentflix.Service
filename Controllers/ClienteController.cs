@@ -130,17 +130,11 @@ public class ClienteController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status412PreconditionFailed)]
     [HttpDelete("{id}")]
-    public ActionResult DeleteCliente(int id)
+    public ActionResult DeleteCliente(ClienteDTO Cliente)
     {
         try
         {
-            var cliente = ClienteRepository.GetById(id);
-            if (cliente == null)
-            {
-                return NotFound();
-            }
-
-            ClienteRepository.Delete(id);
+            ClienteRepository.Delete(Cliente);
             return NoContent();
 
         }

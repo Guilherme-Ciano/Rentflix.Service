@@ -68,12 +68,13 @@ namespace rentflix.service.Repositories
             }
         }
 
-        public void Delete(int id)
+        public void Delete(ClienteDTO Cliente)
         {
             try
             {
                 using (MySqlConnection connection = DB_Connection.GetConnection())
                 {
+                    int id = Cliente.Id;
                     connection.Execute("DELETE FROM clientes WHERE id = @id", new { id });
                 }
             }

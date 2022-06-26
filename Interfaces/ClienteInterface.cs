@@ -5,7 +5,7 @@ namespace rentflix.service.Interfaces
     {
         void Create(ClienteDTO Cliente);
         void Update(ClienteDTO Cliente);
-        void Delete(int id);
+        void Delete(ClienteDTO Cliente);
         IEnumerable<ClienteDTO> GetAll();
         ClienteDTO GetById(int id);
         ClienteDTO GetClienteLogging(LoggingDTO login);
